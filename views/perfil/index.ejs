@@ -1,0 +1,224 @@
+<%- include('../partials/navbar') %>
+<%- include('../layouts/main') %>
+<div class="container mt-5">
+    <div class="profile-header">
+      <div class="row">
+        <div class="col-md-8">
+          <h2><i class="fas fa-user-circle me-2"></i>Mi Perfil</h2>
+          <p class="text-muted">Bienvenido, <%= usuario.nombre %> <%= usuario.apellido %></p>
+        </div>
+        <div class="col-md-4 text-end">
+          <a href="/auth/logout" class="btn btn-outline-danger">
+            <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+          </a>
+        </div>
+      </div>
+      
+      <div class="profile-stats">
+        <div class="profile-stat">
+          <div class="profile-stat-value" id="vehiculos-count">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+          <div class="profile-stat-label">Vehículos</div>
+          <a href="/vehiculos/mis-vehiculos" class="btn btn-sm btn-primary mt-2">
+            <i class="fas fa-car me-1"></i>Ver Vehículos
+          </a>
+        </div>
+        
+        <div class="profile-stat">
+          <div class="profile-stat-value" id="ordenes-count">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+          <div class="profile-stat-label">Órdenes</div>
+          <a href="/ordenes/mis-ordenes" class="btn btn-sm btn-primary mt-2">
+            <i class="fas fa-clipboard-list me-1"></i>Ver Órdenes
+          </a>
+        </div>
+        
+        <div class="profile-stat">
+          <div class="profile-stat-value">
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="profile-stat-label">Nueva Orden</div>
+          <a href="/ordenes/nueva" class="btn btn-sm btn-success mt-2">
+            <i class="fas fa-car-wash me-1"></i>Solicitar Lavado
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-user me-2"></i>Información Personal</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>Nombre:</strong> <%= usuario.nombre %> <%= usuario.apellido %></p>
+            <p><strong>Email:</strong> <%= usuario.email %></p>
+            <% if (usuario.telefono) { %>
+              <p><strong>Teléfono:</strong> <%= usuario.telefono %></p>
+            <% } %>
+            <p><strong>Miembro desde:</strong> <span id="fecha-registro"></span></p>
+          </div>
+          <div class="card-footer">
+            <a href="/perfil/editar" class="btn btn-outline-primary">
+              <i class="fas fa-edit me-1"></i>Editar Perfil
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-car me-2"></i>Mis Vehículos Recientes</h5>
+          </div>
+          <div class="card-body" id="vehiculos-recientes">
+            <div class="text-center py-3">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+              <p class="mt-2">Cargando vehículos...</p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-between">
+              <a href="/vehiculos/mis-vehiculos" class="btn btn-outline-primary">
+                <i class="fas fa-list me-1"></i>Ver Todos
+              </a>
+              <a href="/vehiculos/registro" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i>Nuevo Vehículo
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-12 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Órdenes Recientes</h5>
+          </div>
+          <div class="card-body" id="ordenes-recientes">
+            <div class="text-center py-3">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+              <p class="mt-2">Cargando órdenes...</p>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-between">
+              <a href="/ordenes/mis-ordenes" class="btn btn-outline-primary">
+                <i class="fas fa-list me-1"></i>Ver Todas
+              </a>
+              <a href="/ordenes/nueva" class="btn btn-success">
+                <i class="fas fa-plus me-1"></i>Nueva Orden
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', async function() {
+      try {
+        // Cargar contadores
+        const responseVehiculos = await fetch('/vehiculos/api/count');
+        const dataVehiculos = await responseVehiculos.json();
+        document.getElementById('vehiculos-count').textContent = dataVehiculos.count;
+        
+        const responseOrdenes = await fetch('/ordenes/api/count');
+        const dataOrdenes = await responseOrdenes.json();
+        document.getElementById('ordenes-count').textContent = dataOrdenes.count;
+        
+        // Cargar vehículos recientes
+        const responseVehiculosRecientes = await fetch('/vehiculos/api/recientes');
+        const dataVehiculosRecientes = await responseVehiculosRecientes.json();
+        
+        const vehiculosContainer = document.getElementById('vehiculos-recientes');
+        
+        if (dataVehiculosRecientes.vehiculos.length > 0) {
+          let html = '';
+          dataVehiculosRecientes.vehiculos.forEach(vehiculo => {
+            html += `
+              <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                <div class="flex-shrink-0">
+                  <i class="fas fa-car fa-2x text-primary"></i>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="mb-0">${vehiculo.marca} ${vehiculo.modelo}</h6>
+                  <small class="text-muted">Placa: ${vehiculo.placa} | Tipo: ${vehiculo.tipo}</small>
+                </div>
+                <a href="/ordenes/nueva?vehiculoId=${vehiculo.id}" class="btn btn-sm btn-success">
+                  <i class="fas fa-car-wash"></i>
+                </a>
+              </div>
+            `;
+          });
+          vehiculosContainer.innerHTML = html;
+        } else {
+          vehiculosContainer.innerHTML = `
+            <div class="alert alert-info">
+              <p class="mb-0">No tienes vehículos registrados. <a href="/vehiculos/registro" class="alert-link">Registra tu primer vehículo</a>.</p>
+            </div>
+          `;
+        }
+        
+        // Cargar órdenes recientes
+        const responseOrdenesRecientes = await fetch('/ordenes/api/recientes');
+        const dataOrdenesRecientes = await responseOrdenesRecientes.json();
+        
+        const ordenesContainer = document.getElementById('ordenes-recientes');
+        
+        if (dataOrdenesRecientes.ordenes.length > 0) {
+          let html = '<div class="table-responsive"><table class="table table-hover"><thead><tr><th>ID</th><th>Fecha</th><th>Vehículo</th><th>Estado</th><th>Total</th><th></th></tr></thead><tbody>';
+          
+          dataOrdenesRecientes.ordenes.forEach(orden => {
+            const fecha = new Date(orden.createdAt).toLocaleDateString();
+            const estado = orden.estado === 'Pendiente' ? 'bg-warning' : 
+                          orden.estado === 'En Proceso' ? 'bg-info' : 
+                          orden.estado === 'Completado' ? 'bg-success' : 'bg-danger';
+            
+            html += `
+              <tr>
+                <td>#${orden.id}</td>
+                <td>${fecha}</td>
+                <td>${orden.vehiculo.marca} ${orden.vehiculo.modelo}</td>
+                <td><span class="badge ${estado}">${orden.estado}</span></td>
+                <td>$${orden.total}</td>
+                <td>
+                  <a href="/ordenes/detalle/${orden.id}" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-eye"></i>
+                  </a>
+                </td>
+              </tr>
+            `;
+          });
+          
+          html += '</tbody></table></div>';
+          ordenesContainer.innerHTML = html;
+        } else {
+          ordenesContainer.innerHTML = `
+            <div class="alert alert-info">
+              <p class="mb-0">No tienes órdenes registradas. <a href="/ordenes/nueva" class="alert-link">Solicita tu primer lavado</a>.</p>
+            </div>
+          `;
+        }
+        
+        // Formatear fecha de registro
+        const fechaRegistro = new Date('<%= usuario.createdAt %>');
+        document.getElementById('fecha-registro').textContent = fechaRegistro.toLocaleDateString();
+        
+      } catch (error) {
+        console.error('Error al cargar datos:', error);
+      }
+    });
+  </script>
+  
+  

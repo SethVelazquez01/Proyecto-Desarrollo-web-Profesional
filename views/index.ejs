@@ -1,0 +1,171 @@
+<%- include('./layouts/main') %>
+<%- include('./partials/navbar') %>
+
+<div class="jumbotron bg-light fade-in">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-7">
+        <h1 class="display-4 fw-bold">¡Bienvenido a Autolavado!</h1>
+        <p class="lead">El mejor servicio de lavado para tu vehículo con atención personalizada y resultados garantizados.</p>
+        <hr class="my-4">
+        <p>Ofrecemos diferentes tipos de lavado para todo tipo de vehículos. ¡Agenda tu cita ahora!</p>
+        <a class="btn btn-primary btn-lg" href="/ordenes/nueva" role="button">
+          <i class="fas fa-car-wash me-2"></i>Solicitar Lavado
+        </a>
+        <a class="btn btn-outline-primary btn-lg ms-2" href="/servicios" role="button">
+          <i class="fas fa-list me-2"></i>Ver Servicios
+        </a>
+      </div>
+      <div class="col-md-5 d-none d-md-block">
+        <img src="https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Lavado de auto" class="img-fluid rounded shadow">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-12 text-center mb-5">
+      <h2 class="fw-bold">Nuestros Servicios</h2>
+      <p class="text-muted">Ofrecemos una variedad de servicios para mantener tu vehículo impecable</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card service-card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-car fa-3x mb-3 text-primary"></i>
+          <h5 class="card-title">Lavado Básico</h5>
+          <p class="card-text">Incluye lavado exterior, secado y aspirado básico del interior.</p>
+          <p class="text-primary fw-bold">$150.00</p>
+        </div>
+        <div class="card-footer text-center border-top-0">
+          <a href="/ordenes/nueva" class="btn btn-primary">Solicitar</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+      <div class="card service-card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-car-side fa-3x mb-3 text-primary"></i>
+          <h5 class="card-title">Lavado Completo</h5>
+          <p class="card-text">Incluye lavado exterior, encerado, aspirado completo y limpieza de interiores.</p>
+          <p class="text-primary fw-bold">$250.00</p>
+        </div>
+        <div class="card-footer text-center border-top-0">
+          <a href="/ordenes/nueva" class="btn btn-primary">Solicitar</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+      <div class="card service-card h-100">
+        <div class="card-body text-center">
+          <i class="fas fa-car-wash fa-3x mb-3 text-primary"></i>
+          <h5 class="card-title">Lavado Premium</h5>
+          <p class="card-text">Incluye todo el servicio completo más pulido, tratamiento de cuero y aromatización.</p>
+          <p class="text-primary fw-bold">$350.00</p>
+        </div>
+        <div class="card-footer text-center border-top-0">
+          <a href="/ordenes/nueva" class="btn btn-primary">Solicitar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-md-12 text-center mb-5">
+      <h2 class="fw-bold">¿Por qué elegirnos?</h2>
+      <p class="text-muted">Nos destacamos por ofrecer el mejor servicio</p>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-md-4 mb-4">
+      <div class="feature-box">
+        <i class="fas fa-clock feature-icon"></i>
+        <h5>Rapidez</h5>
+        <p>Servicio rápido y eficiente para que no pierdas tiempo. Respetamos tu agenda y valoramos tu tiempo.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="feature-box">
+        <i class="fas fa-star feature-icon"></i>
+        <h5>Calidad</h5>
+        <p>Utilizamos productos de primera calidad para el cuidado de tu vehículo, garantizando los mejores resultados.</p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="feature-box">
+        <i class="fas fa-hand-holding-usd feature-icon"></i>
+        <h5>Precios</h5>
+        <p>Ofrecemos los mejores precios del mercado sin sacrificar calidad. Tenemos opciones para todos los presupuestos.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-md-12 text-center mb-4">
+      <h2 class="fw-bold">Testimonios de Clientes</h2>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+          </div>
+          <p class="card-text">"Excelente servicio, mi auto quedó como nuevo. El personal es muy amable y profesional. Definitivamente volveré."</p>
+          <p class="fw-bold mb-0">Carlos Rodríguez</p>
+          <small class="text-muted">Cliente desde 2022</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+          </div>
+          <p class="card-text">"Muy buen precio y calidad. El lavado premium vale cada centavo, mi carro quedó impecable por dentro y por fuera."</p>
+          <p class="fw-bold mb-0">Ana Martínez</p>
+          <small class="text-muted">Cliente desde 2021</small>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="mb-3">
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star-half-alt text-warning"></i>
+          </div>
+          <p class="card-text">"Rápido y eficiente. Dejé mi auto y en menos de una hora estaba listo. El sistema de registro online es muy conveniente."</p>
+          <p class="fw-bold mb-0">Miguel Sánchez</p>
+          <small class="text-muted">Cliente desde 2023</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('./partials/foooter') %>
+
+
+  
+  

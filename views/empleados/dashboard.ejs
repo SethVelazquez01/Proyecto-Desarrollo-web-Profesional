@@ -1,0 +1,192 @@
+
+<div class="container mt-5">
+  <div class="row mb-4">
+    <div class="col-md-8">
+      <h2><i class="fas fa-tachometer-alt me-2"></i>Panel de Empleados</h2>
+      <p class="text-muted">Bienvenido, <%= empleado.nombre %> <%= empleado.apellido %></p>
+    </div>
+    <div class="col-md-4 text-end">
+      <% if (empleado.rol === 'admin') { %>
+        <a href="/empleados/todas-ordenes" class="btn btn-outline-primary me-2">
+          <i class="fas fa-list me-1"></i> Todas las Órdenes
+        </a>
+        <a href="/empleados/gestion" class="btn btn-outline-dark">
+          <i class="fas fa-users-cog me-1"></i> Gestión de Empleados
+        </a>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-md-3 mb-4">
+      <div class="card bg-primary text-white shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-white-50">Órdenes Pendientes</h6>
+              <h2 class="mb-0">
+                <%= ordenes.filter(o => o.estado === 'Pendiente').length %>
+              </h2>
+            </div>
+            <i class="fas fa-clock fa-3x text-white-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card bg-info text-white shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-white-50">En Proceso</h6>
+              <h2 class="mb-0">
+                <%= ordenes.filter(o => o.estado === 'En Proceso').length %>
+              </h2>
+            </div>
+            <i class="fas fa-cog fa-spin fa-3x text-white-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card bg-success text-white shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-white-50">Completadas Hoy</h6>
+              <h2 class="mb-0">
+                <%= ordenes.filter(o => o.estado === 'Completado' && new Date(o.updatedAt).toDateString() === new Date().toDateString()).length %>
+              </h2>
+            </div>
+            <i class="fas fa-check-circle fa-3x text-white-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-4">
+      <div class="card bg-danger text-white shadow">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="text-white-50">Canceladas</h6>
+              <h2 class="mb-0">
+                <%= ordenes.filter(o => o.estado === 'Cancelado').length %>
+              </h2>
+            </div>
+            <i class="fas fa-ban fa-3x text-white-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0"><i class="fas fa-list me-2"></i>Órdenes Pendientes y En Proceso</h5>
+    </div>
+    <div class="card-body">
+      <% if (ordenes && ordenes.length > 0) { %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha</th>
+                <th>Vehículo</th>
+                <th>Cliente</th>
+                <th>Estado</th>
+                <th>Asignado a</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% ordenes.forEach(orden => { %>
+                <tr>
+                  <td><%= orden.id %></td>
+                  <td><%= orden.createdAt.toLocaleString() %></td>
+                  <td>
+                    <%= orden.vehiculo.marca %> <%= orden.vehiculo.modelo %><br>
+                    <small class="text-muted"><%= orden.vehiculo.placa %></small>
+                  </td>
+                  <td>
+                    <% if (orden.usuarioId && orden.cliente) { %>
+                      <%= orden.cliente.nombre %> <%= orden.cliente.apellido %>
+                    <% } else { %>
+                      <%= orden.nombreCliente %><br>
+                      <small class="text-muted"><%= orden.telefonoCliente %></small>
+                    <% } %>
+                  </td>
+                  <td>
+                    <span class="badge <%= 
+                      orden.estado === 'Pendiente' ? 'bg-warning' : 
+                      orden.estado === 'En Proceso' ? 'bg-info' : 
+                      orden.estado === 'Completado' ? 'bg-success' : 
+                      'bg-danger' 
+                    %>">
+                      <%= orden.estado %>
+                    </span>
+                  </td>
+                  <td>
+                    <% if (orden.empleado) { %>
+                      <%= orden.empleado.nombre %>
+                    <% } else { %>
+                      <span class="text-muted">No asignado</span>
+                    <% } %>
+                  </td>
+                  <td>
+                    <div class="btn-group">
+                      <a href="/ordenes/detalle/<%= orden.id %>" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-eye"></i>
+                      </a>
+                      <button type="button" class="btn btn-sm btn-outline-success" data-bs-toggle="modal" data-bs-target="#estadoModal<%= orden.id %>">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </div>
+                    
+                    <!-- Modal para cambiar estado -->
+                    <div class="modal fade" id="estadoModal<%= orden.id %>" tabindex="-1" aria-labelledby="estadoModalLabel<%= orden.id %>" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="estadoModalLabel<%= orden.id %>">Actualizar Estado - Orden #<%= orden.id %></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <form action="/empleados/orden/<%= orden.id %>/actualizar-estado" method="POST">
+                            <div class="modal-body">
+                              <div class="mb-3">
+                                <label for="estado<%= orden.id %>" class="form-label">Estado</label>
+                                <select class="form-select" id="estado<%= orden.id %>" name="estado" required>
+                                  <option value="Pendiente" <%= orden.estado === 'Pendiente' ? 'selected' : '' %>>Pendiente</option>
+                                  <option value="En Proceso" <%= orden.estado === 'En Proceso' ? 'selected' : '' %>>En Proceso</option>
+                                  <option value="Completado" <%= orden.estado === 'Completado' ? 'selected' : '' %>>Completado</option>
+                                  <option value="Cancelado" <%= orden.estado === 'Cancelado' ? 'selected' : '' %>>Cancelado</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                              <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle me-2"></i>
+          <p class="mb-0">No hay órdenes pendientes o en proceso en este momento.</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+
+  
+  

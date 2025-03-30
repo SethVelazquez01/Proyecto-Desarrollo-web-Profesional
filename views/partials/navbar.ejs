@@ -1,0 +1,113 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <i class="fas fa-car-wash me-2"></i>
+      Autolavado
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link <%= (typeof activePage !== 'undefined' && activePage === 'home') ? 'active' : '' %>" href="/">
+            <i class="fas fa-home me-1"></i> Inicio
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= (typeof activePage !== 'undefined' && activePage === 'servicios') ? 'active' : '' %>" href="/servicios">
+            <i class="fas fa-list-alt me-1"></i> Servicios
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%= (typeof activePage !== 'undefined' && activePage === 'nueva-orden') ? 'active' : '' %>" href="/ordenes/nueva">
+            <i class="fas fa-plus-circle me-1"></i> Solicitar Lavado
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <% if (locals.user) { %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-user-circle me-1"></i> <%= user.nombre %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+              <li>
+                <a class="dropdown-item" href="/perfil">
+                  <i class="fas fa-user me-2"></i> Mi Perfil
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/vehiculos/mis-vehiculos">
+                  <i class="fas fa-car me-2"></i> Mis Vehículos
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/ordenes/mis-ordenes">
+                  <i class="fas fa-clipboard-list me-2"></i> Mis Órdenes
+                </a>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/auth/logout">
+                  <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                </a>
+              </li>
+            </ul>
+          </li>
+        <% } else if (locals.empleado) { %>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="fas fa-user-tie me-1"></i> <%= empleado.nombre %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow">
+              <li>
+                <a class="dropdown-item" href="/empleados/dashboard">
+                  <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+              </li>
+              <% if (empleado.rol === 'admin') { %>
+                <li>
+                  <a class="dropdown-item" href="/empleados/todas-ordenes">
+                    <i class="fas fa-list me-2"></i> Todas las Órdenes
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/empleados/gestion">
+                    <i class="fas fa-users-cog me-2"></i> Gestión de Empleados
+                  </a>
+                </li>
+              <% } %>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="/empleados/logout">
+                  <i class="fas fa-sign-out-alt me-2"></i> Cerrar Sesión
+                </a>
+              </li>
+            </ul>
+          </li>
+        <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link <%= (typeof activePage !== 'undefined' && activePage === 'login') ? 'active' : '' %>" href="/auth/login">
+              <i class="fas fa-sign-in-alt me-1"></i> Iniciar Sesión
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= (typeof activePage !== 'undefined' && activePage === 'registro') ? 'active' : '' %>" href="/auth/registro">
+              <i class="fas fa-user-plus me-1"></i> Registrarse
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= (typeof activePage !== 'undefined' && activePage === 'empleados') ? 'active' : '' %>" href="/empleados/login">
+              <i class="fas fa-user-shield me-1"></i> Acceso Empleados
+            </a>
+          </li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  
+  

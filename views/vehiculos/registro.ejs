@@ -1,0 +1,58 @@
+<%- include('../layouts/main') %>
+<br>
+<br>
+<br>
+<%- include('../partials/navbar') %>
+<div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Registrar Vehículo</h4>
+        </div>
+        <div class="card-body">
+          <form action="/vehiculos/registro" method="POST">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" id="marca" name="marca" value="<%= typeof vehiculo !== 'undefined' ? vehiculo.marca : '' %>" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" id="modelo" name="modelo" value="<%= typeof vehiculo !== 'undefined' ? vehiculo.modelo : '' %>" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="anio" class="form-label">Año</label>
+                <input type="number" class="form-control" id="anio" name="anio" value="<%= typeof vehiculo !== 'undefined' ? vehiculo.anio : '' %>">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="color" class="form-label">Color</label>
+                <input type="text" class="form-control" id="color" name="color" value="<%= typeof vehiculo !== 'undefined' ? vehiculo.color : '' %>">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="placa" class="form-label">Placa</label>
+                <input type="text" class="form-control" id="placa" name="placa" value="<%= typeof vehiculo !== 'undefined' ? vehiculo.placa : '' %>" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="tipo" class="form-label">Tipo de Vehículo</label>
+              <select class="form-select" id="tipo" name="tipo" required>
+                <option value="Sedan" <%= typeof vehiculo !== 'undefined' && vehiculo.tipo === 'Sedan' ? 'selected' : '' %>>Sedan</option>
+                <option value="SUV" <%= typeof vehiculo !== 'undefined' && vehiculo.tipo === 'SUV' ? 'selected' : '' %>>SUV</option>
+                <option value="Pickup" <%= typeof vehiculo !== 'undefined' && vehiculo.tipo === 'Pickup' ? 'selected' : '' %>>Pickup</option>
+                <option value="Camioneta" <%= typeof vehiculo !== 'undefined' && vehiculo.tipo === 'Camioneta' ? 'selected' : '' %>>Camioneta</option>
+                <option value="Motocicleta" <%= typeof vehiculo !== 'undefined' && vehiculo.tipo === 'Motocicleta' ? 'selected' : '' %>>Motocicleta</option>
+                <option value="Otro" <%= typeof vehiculo !== 'undefined' && vehiculo.tipo === 'Otro' ? 'selected' : '' %>>Otro</option>
+              </select>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Registrar Vehículo</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

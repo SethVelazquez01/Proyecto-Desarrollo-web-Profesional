@@ -1,0 +1,121 @@
+<%- include('../layouts/main') %>
+<br>
+<br>
+<br>
+<%- include('../partials/navbar') %>
+<div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Nueva Orden de Lavado</h4>
+        </div>
+        <div class="card-body">
+          <form action="/ordenes/nueva" method="POST">
+            <!-- Sección de Vehículo -->
+            <h5 class="mb-3">Información del Vehículo</h5>
+            
+            <% if (usuarioAutenticado && vehiculosUsuario && vehiculosUsuario.length > 0) { %>
+              <!-- Si el usuario está autenticado y tiene vehículos registrados -->
+              <div class="mb-3">
+                <label for="vehiculoId" class="form-label">Selecciona tu vehículo</label>
+                <select class="form-select" id="vehiculoId" name="vehiculoId" required>
+                  <option value="">-- Selecciona un vehículo --</option>
+                  <% vehiculosUsuario.forEach(v => { %>
+                    <option value="<%= v.id %>" <%= (vehiculo && vehiculo.id === v.id) ? 'selected' : '' %>>
+                      <%= v.marca %> <%= v.modelo %> - <%= v.placa %> (<%= v.tipo %>)
+                    </option>
+                  <% }); %>
+                </select>
+                <div class="form-text">
+                  <a href="/vehiculos/registro">Registrar un nuevo vehículo</a>
+                </div>
+              </div>
+            <% } else if (vehiculo) { %>
+              <!-- Si se seleccionó un vehículo no registrado previamente -->
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h6><%= vehiculo.marca %> <%= vehiculo.modelo %></h6>
+                  <p class="mb-0">
+                    <strong>Placa:</strong> <%= vehiculo.placa %><br>
+                    <strong>Tipo:</strong> <%= vehiculo.tipo %>
+                    <% if (vehiculo.color) { %>
+                      <br><strong>Color:</strong> <%= vehiculo.color %>
+                    <% } %>
+                  </p>
+                  <input type="hidden" name="vehiculoId" value="<%= vehiculo.id %>">
+                </div>
+              </div>
+            <% } else { %>
+              <!-- Si no hay vehículo seleccionado -->
+              <div class="alert alert-info">
+                <p>Primero debes registrar un vehículo. <a href="/vehiculos/registro" class="alert-link">Registrar vehículo</a></p>
+              </div>
+            <% } %>
+  
+            <!-- Sección de Servicios -->
+            <h5 class="mb-3 mt-4">Servicios de Lavado</h5>
+            
+            <% if (servicios && servicios.length > 0) { %>
+              <div class="row">
+                <% servicios.forEach(servicio => { %>
+                  <div class="col-md-6 mb-3">
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" name="serviciosIds" value="<%= servicio.id %>" id="servicio<%= servicio.id %>">
+                          <label class="form-check-label" for="servicio<%= servicio.id %>">
+                            <h6 class="mb-1"><%= servicio.nombre %> - $<%= servicio.precio %></h6>
+                            <p class="mb-0 text-muted"><%= servicio.descripcion %></p>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <% }); %>
+              </div>
+            <% } else { %>
+              <div class="alert alert-warning">
+                <p>No hay servicios disponibles en este momento.</p>
+              </div>
+            <% } %>
+  
+            <!-- Información de contacto (solo para usuarios no autenticados) -->
+            <% if (!usuarioAutenticado) { %>
+              <h5 class="mb-3 mt-4">Información de Contacto</h5>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="nombreCliente" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="nombreCliente" name="nombreCliente" value="<%= typeof formData !== 'undefined' ? formData.nombreCliente : '' %>" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="telefonoCliente" class="form-label">Teléfono</label>
+                  <input type="tel" class="form-control" id="telefonoCliente" name="telefonoCliente" value="<%= typeof formData !== 'undefined' ? formData.telefonoCliente : '' %>" required>
+                </div>
+              </div>
+              <div class="alert alert-info">
+                <p>
+                  <i class="fas fa-info-circle me-2"></i>
+                  Si deseas guardar tus datos para futuros lavados, puedes <a href="/auth/registro" class="alert-link">registrarte aquí</a>.
+                </p>
+              </div>
+            <% } %>
+  
+            <!-- Observaciones -->
+            <div class="mb-3 mt-4">
+              <label for="observaciones" class="form-label">Observaciones</label>
+              <textarea class="form-control" id="observaciones" name="observaciones" rows="3"><%= typeof formData !== 'undefined' ? formData.observaciones : '' %></textarea>
+            </div>
+  
+            <!-- Botón de envío -->
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-primary" <%= (!vehiculo || !servicios || servicios.length === 0) ? 'disabled' : '' %>>
+                Solicitar Lavado
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

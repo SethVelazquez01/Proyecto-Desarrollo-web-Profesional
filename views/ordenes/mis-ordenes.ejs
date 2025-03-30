@@ -1,0 +1,92 @@
+<%- include('../layouts/main') %>
+<%- include('../partials/navbar') %>
+<div class="container mt-5">
+    <div class="row mb-4">
+      <div class="col-md-8">
+        <h2><i class="fas fa-clipboard-list me-2"></i>Mis Órdenes de Lavado</h2>
+      </div>
+      <div class="col-md-4 text-end">
+        <a href="/ordenes/nueva" class="btn btn-primary">
+          <i class="fas fa-plus me-1"></i> Nueva Orden
+        </a>
+      </div>
+    </div>
+  
+    <% if (ordenes && ordenes.length > 0) { %>
+      <div class="row">
+        <% ordenes.forEach(orden => { %>
+          <div class="col-md-6 mb-4">
+            <div class="card order-card shadow-sm">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Orden #<%= orden.id %></h5>
+                <span class="badge <%= 
+                  orden.estado === 'Pendiente' ? 'bg-warning' : 
+                  orden.estado === 'En Proceso' ? 'bg-info' : 
+                  orden.estado === 'Completado' ? 'bg-success' : 
+                  'bg-danger' 
+                %>">
+                  <%= orden.estado %>
+                </span>
+              </div>
+              <div class="card-body">
+                <p><strong><i class="fas fa-calendar-alt me-2"></i>Fecha:</strong> <%= orden.createdAt.toLocaleString() %></p>
+                <p><strong><i class="fas fa-car me-2"></i>Vehículo:</strong> <%= orden.vehiculo.marca %> <%= orden.vehiculo.modelo %> (<%= orden.vehiculo.placa %>)</p>
+                <p><strong><i class="fas fa-money-bill-wave me-2"></i>Total:</strong> $<%= orden.total %></p>
+              </div>
+              <div class="card-footer d-flex justify-content-between">
+                <a href="/ordenes/detalle/<%= orden.id %>" class="btn btn-sm btn-primary">
+                  <i class="fas fa-eye me-1"></i> Ver Detalles
+                </a>
+                <% if (orden.estado === 'Pendiente') { %>
+                  <a href="/ordenes/cancelar/<%= orden.id %>" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de cancelar esta orden?')">
+                    <i class="fas fa-times me-1"></i> Cancelar
+                  </a>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="alert alert-info shadow-sm">
+        <i class="fas fa-info-circle me-2"></i>
+        <p class="mb-0">No tienes órdenes de lavado registradas. <a href="/ordenes/nueva" class="alert-link">Solicita tu primer lavado</a>.</p>
+      </div>
+    <% } %>
+  
+    <div class="card mt-4">
+      <div class="card-header bg-light">
+        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Información sobre estados</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <div class="d-flex align-items-center">
+              <span class="badge bg-warning me-2">Pendiente</span>
+              <span>Tu orden ha sido recibida y está en espera de procesamiento.</span>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="d-flex align-items-center">
+              <span class="badge bg-info me-2">En Proceso</span>
+              <span>Tu vehículo está siendo lavado en este momento.</span>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="d-flex align-items-center">
+              <span class="badge bg-success me-2">Completado</span>
+              <span>El servicio ha sido completado satisfactoriamente.</span>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="d-flex align-items-center">
+              <span class="badge bg-danger me-2">Cancelado</span>
+              <span>La orden ha sido cancelada.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

@@ -1,0 +1,67 @@
+<%- include('./partials/navbar') %>
+<%- include('./layouts/main') %>
+
+<div class="container mt-5">
+    <div class="row mb-4">
+      <div class="col-md-12 text-center">
+        <h1 class="fw-bold">Nuestros Servicios</h1>
+        <p class="lead text-muted">Conoce todos los servicios que ofrecemos para tu vehículo</p>
+      </div>
+    </div>
+  
+    <div class="row mb-5">
+      <% if (servicios && servicios.length > 0) { %>
+        <% servicios.forEach(servicio => { %>
+          <div class="col-md-6 mb-4">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h5 class="card-title mb-0"><%= servicio.nombre %></h5>
+                  <span class="badge bg-primary">$<%= servicio.precio %></span>
+                </div>
+                <p class="card-text"><%= servicio.descripcion %></p>
+                <% if (servicio.duracionEstimada) { %>
+                  <p class="text-muted"><i class="fas fa-clock me-2"></i>Duración estimada: <%= servicio.duracionEstimada %> minutos</p>
+                <% } %>
+              </div>
+              <div class="card-footer bg-white border-top-0">
+                <a href="/ordenes/nueva?servicioId=<%= servicio.id %>" class="btn btn-primary">
+                  <i class="fas fa-car-wash me-2"></i>Solicitar este servicio
+                </a>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div class="col-12">
+          <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>No hay servicios disponibles en este momento.
+          </div>
+        </div>
+      <% } %>
+    </div>
+  
+    <div class="row mt-5">
+      <div class="col-md-12">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h4 class="card-title mb-4">Información adicional</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <h5><i class="fas fa-info-circle me-2 text-primary"></i>Sobre nuestros servicios</h5>
+                <p>Todos nuestros servicios incluyen productos de alta calidad y son realizados por personal capacitado. Garantizamos la satisfacción del cliente en cada lavado.</p>
+                <p>Si tienes alguna necesidad especial para tu vehículo, no dudes en consultarnos por servicios personalizados.</p>
+              </div>
+              <div class="col-md-6">
+                <h5><i class="fas fa-clock me-2 text-primary"></i>Tiempos de espera</h5>
+                <p>Los tiempos de espera pueden variar según la demanda y el tipo de servicio. Te recomendamos agendar tu cita con anticipación para garantizar una atención oportuna.</p>
+                <p>Para servicios express, contamos con opciones de lavado rápido que toman menos de 30 minutos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
